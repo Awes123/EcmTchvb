@@ -1,0 +1,147 @@
+{% extends 'eshop/basic.html' %} {% block title %} Checkout || New Lucky Cart {% endblock %} {% block body %}
+<div class="container">
+    <div class="col my-4 cart_totals">
+        <h5 class="page-header">Step 1 - New Lucky Cart Express Checkout - Review Your Cart Items </h5>
+        <div class="my-4">
+            <ul class="list-group" id="items">
+            </ul>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">Payable Amount : <b> &#8377;<span
+                                id="totalprice"></span>/-</b> Enter your details below and place order. Thanks for using
+                        for New Lucky Cart !</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="col my-4 cart_totals">
+        <h5 class="page-header">Step 2 - Enter Address and other details : </h5>
+        <form method="POST" action="/shop/checkout/">
+            {% csrf_token %}
+            <input type="hidden" name="itemsJson" id="itemsJson">
+            <input type="hidden" name="amount" id="amount">
+            <div class="form-group">
+                <label for="inputAddress">Address</label>
+                <input type="text" class="input-text form-control input-lg" name="inputAddress" id="inputAddress"
+                    placeholder="1234 Main St">
+            </div>
+            <div class="form-group">
+                <label for="inputAddress2">Address Line 2</label>
+                <input type="text" class="input-text form-control input-lg" name="inputAddress2" id="inputAddress2"
+                    placeholder="Apartment, studio, or floor">
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputCity">City</label>
+                    <input type="text" class="form-control" name="inputCity" id="inputCity">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputState">State</label>
+                    <input type="text" class="form-control" name="inputState" id="inputState" placeholder="Enter State">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputZip">Zip</label>
+                    <input type="text" class="form-control" name="inputZip" id="inputZip">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Place Order</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+{% block js %}
+<script>
+    if (localStorage.getItem('cart') == null) {
+        var cart = {};
+    } else {
+        cart = JSON.parse(localStorage.getItem('cart'));
+        updateCart(cart);
+    }
+    $('#popcart').popover();
+    $("#popcart").attr('data-content', '<h5>Cart for your items in myshopping cart</h5>');
+    updatepopover(cart);
+
+    function updateCart(cart) {
+        debugger
+        var sum = 0;
+        for (var item in cart) {
+            sum = sum + cart[item][0];
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        $('#cart').html(sum);
+        updatepopover(cart);
+    }
+    $(document).on('click', '#clearCart', function () {
+        debugger
+        cart = JSON.parse(localStorage.getItem('cart'));
+        for (var item in cart) {
+            $('#div' + item).append('<button id="' + item + '" class="btn btn-primary cart">Add To Cart</button>');
+        }
+        localStorage.clear();
+        cart = {};
+        updateCart(cart);
+    });
+
+    function updatepopover(cart) {
+        debugger
+        var popstr = "";
+        popstr = popstr + "<h5>Cart for your items in myshopping cart</h5><div class='mx-2 my-2'>";
+        var i = 1;
+        for (var item in cart) {
+            if (cart[item][0] == 0) {
+            } else {
+                popstr = popstr + "<b>" + i + "</b>. ";
+                let name = cart[item][1];
+                let qty = cart[item][0];
+
+                popstr = popstr + name + "... <b>Qty</b> : " + qty + "<br>";
+                i = i + 1;
+            }
+        }
+        popstr = popstr + "</div>";
+        popstr = popstr + "<a href='/shop/checkout/' class='btn btn-primary' id='checkout' >Checkout</a><span class='btn btn-primary mx-2' id='clearCart' onclick='clearCart()'>Clear Cart</span>";
+        $("#popcart").attr('data-content', popstr);
+        $('#popcart').popover('show');
+    }
+    var totalprice = 0;
+    if ($.isEmptyObject(cart)) {
+        mystr = ` <li class="list-group-item d-flex justify-content-between align-items-center">
+      Your cart is empty, please add some items to your cart before checking out!
+      </li>`;
+        $("#items").append(mystr);
+
+    } else {
+        for (var item in cart) {
+            let name = cart[item][1];
+            let qty = cart[item][0];
+            if (cart[item][0] == 0) {
+            } else {
+                let itemprice = cart[item][2];
+                totalprice = totalprice + qty * itemprice;
+                mystr = ` <li class="list-group-item d-flex justify-content-between align-items-center">
+        ${name}
+        <span class="badge badge-primary badge-pill col-lg-1 p-2">${qty} (${itemprice})</span>
+        </li>`;
+                $("#items").append(mystr);
+            }
+        }
+        if (totalprice == 0) {
+            mystr = ` <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Your cart is empty, please add some items to your cart before checking out!
+                    </li>`;
+            $("#items").append(mystr);
+        }
+    }
+    $("#totalprice").empty();
+    $("#totalprice").append(totalprice);
+    $("#itemsJson").val(JSON.stringify(cart));
+    {% if thank %}
+    alert('Thanks for ordering with us. Your order is {{id}}. Use it to track your order using our order tracket');
+    localStorage.clear();
+    document.location = "/shop";
+    {% endif %}
+    $('#amount').val($('#totalprice').html());
+</script>
+
+{% endblock %}

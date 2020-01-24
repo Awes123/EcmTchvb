@@ -1,0 +1,324 @@
+{% extends 'admins/basic.html' %} {% block css %} {% endblock %}
+{% block title %} Dashboard || My Awesome Cart {% endblock %}
+{% load static %}
+{% block body %}
+
+<div class="page-wrapper">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="row align-items-center">
+            <div class="col-sm-6">
+                <h2 class="page-title-text">Products</h2>
+            </div>
+            <div class="col-sm-6 text-right">
+                <div class="breadcrumbs">
+                    <ul>
+                        <li><a href="/Management/">Dashboard</a></li>
+                        <li><a href="/Management/Product">Products</a></li>
+                        <li>Add</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page Body -->
+    <div class="page-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="panel panel-default">
+                    <div class="panel-head">
+                        <div class="panel-title">
+                            <span class="panel-title-text">Add Product</span>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <form action="/Management/AddProduct/" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Category</label>
+                                            <input type="text" class="form-control" name="Category"
+                                                placeholder="Product Category" required>
+                                            <div class="menu-dropdown-body" style="display: none;visibility:hidden">
+                                                <ul class="menu-nav">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Product Name</label>
+                                            <input type="text" class="form-control" name="Product"
+                                                placeholder="Product Name" required>
+                                            <div class="menu-dropdown-body" style="display: none;visibility:hidden">
+                                                <ul class="menu-nav">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Subcategory</label>
+                                            <div class="input-group">
+                                                <input type="text" name="Subcategory" class="form-control"
+                                                    placeholder="Enter Subcategory (optional)" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Price</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">₹</span>
+                                                </div>
+                                                <input type="text" class="form-control prsel" name="Price"
+                                                    placeholder="Price (Before Sale)" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Unit</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="Unit"
+                                                    placeholder="Product Category" required>
+                                                <div class="menu-dropdown-body" style="display: none;visibility:hidden">
+                                                    <ul class="menu-nav">
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Quantity</label>
+                                            <div class="input-group">
+                                                <input type="Number" class="form-control prsel" name="Quantity"
+                                                    placeholder="Quantity.." required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Sale</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                                <input type="number" min="0" max="100" value="0"
+                                                    class="form-control prsel" name="sale"
+                                                    placeholder="Sale (optional)">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Final Price</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">₹</span>
+                                                </div>
+                                                <input type="text" class="form-control disbaled" readonly
+                                                    name="FinalPrice" placeholder="Final Price">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Product Description</label>
+                                            <input type="text" class="form-control" name="Description"
+                                                placeholder="Product Description" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="col-form-label">Product Status</label>
+                                        <select class="form-control" name="Status" required>
+                                            <option value="True">Available</option>
+                                            <option value="False">Outofstock</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Image One</label>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" name="Imageone" required
+                                                        class="custom-file-input" id="customFile">
+                                                    <label class="custom-file-label" for="customFile">Choose
+                                                        file</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Image two</label>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" name="Imagetwo" required
+                                                        class="custom-file-input" id="customFile1">
+                                                    <label class="custom-file-label" for="customFile1">Choose
+                                                        file</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Image Three</label>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" name="Imagethree" required
+                                                        class="custom-file-input" id="customFile2">
+                                                    <label class="custom-file-label" for="customFile2">Choose
+                                                        file</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer text-left">
+                                <button class="btn btn-primary btn-pill">Submit</button>
+                                <button class="btn btn-default btn-pill mr-2" type="reset">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+    $(document).on('keyup', 'input[name="Category"]', function () {
+        var thisval = $(this).val();
+        var thistext = $(this);
+        if (thisval.length >= 2) {
+            var formData = {
+                'searchinput': thisval,
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/Management/searchcategory/',
+                data: formData,
+                encode: true
+            })
+                .done(function (data) {
+                    debugger
+                    thistext.siblings(".menu-dropdown-body").children('.menu-nav').empty();
+                    data = JSON.parse(data);
+                    updates = data[0];
+                    if (updates != undefined) {
+                        for (i = 0; i < updates.length; i++) {
+                            let name = updates[i]['name'];
+                            let id = updates[i]['id'];
+                            mystr = `<li class="categorylist-item"><span id="${id}">${name}</span></li>`;
+                            thistext.siblings(".menu-dropdown-body").children('.menu-nav').append(mystr);
+                        }
+                        thistext.siblings(".menu-dropdown-body").css('cssText', 'display:block;visibility:visible;');
+                    }
+                });
+        }
+    });
+    $(document).on('click', '.categorylist-item', function () {
+        $(this).parent('.menu-nav').parent('.menu-dropdown-body').siblings('input[name="Category"]').val($(this).children('span').html());
+        $(".menu-dropdown-body").css('cssText', 'display:none;visibility:hidden;');
+    });
+    $(document).on('keyup', 'input[name="Product"]', function () {
+        var thisval = $(this).val();
+        var thistext = $(this);
+        if (thisval.length >= 2) {
+            var formData = {
+                'searchinput': thisval,
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/Management/searchproduct/',
+                data: formData,
+                encode: true
+            })
+                .done(function (data) {
+                    debugger
+                    thistext.siblings(".menu-dropdown-body").children('.menu-nav').empty();
+                    data = JSON.parse(data);
+                    updates = data[0];
+                    if (updates != undefined) {
+                        for (i = 0; i < updates.length; i++) {
+                            let name = updates[i]['name'];
+                            let id = updates[i]['id'];
+                            mystr = `<li class="categorylist-item"><span id="${id}">${name}</span></li>`;
+                            thistext.siblings(".menu-dropdown-body").children('.menu-nav').append(mystr);
+                        }
+                        thistext.siblings(".menu-dropdown-body").children('.menu-nav').css('cssText', 'display:block;visibility:visible;');
+                    }
+                });
+        }
+    });
+    $(document).on('keyup', 'input[name="Unit"]', function () {
+        var thisval = $(this).val();
+        var thistext = $(this);
+        if (thisval.length >= 2) {
+            var formData = {
+                'searchinput': thisval,
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/Management/searchunit/',
+                data: formData,
+                encode: true
+            })
+                .done(function (data) {
+                    debugger
+                    thistext.siblings(".menu-dropdown-body").children('.menu-nav').empty();
+                    data = JSON.parse(data);
+                    updates = data[0];
+                    if (updates != undefined) {
+                        for (i = 0; i < updates.length; i++) {
+                            let name = updates[i]['name'];
+                            let id = updates[i]['id'];
+                            mystr = `<li><span class="categorylist-item" id="${id}">${name}</span></li>`;
+                            thistext.siblings(".menu-dropdown-body").children('.menu-nav').append(mystr);
+                        }
+                        thistext.siblings(".menu-dropdown-body").children('.menu-nav').css('cssText', 'display:block;visibility:visible;');
+                    }
+                });
+        }
+    });
+    $(document).on('submit', 'form', function () {
+        $('input[name="FinalPrice"]').attr('readonly', false);
+        $('input[name="FinalPrice"]').removeClass('disabled');
+    })
+    $(document).on('keyup', '.prsel', function () {
+        debugger
+        var Price = parseFloat($('input[name="Price"]').val());
+        var Sale = parseFloat($('input[name="sale"]').val());
+        if (Price != 0 && Sale != 0) {
+            var divid = Sale * Price;
+            divid = divid / 100;
+            var result = Price - divid;
+            $('input[name="FinalPrice"]').val(result);
+        } else {
+            if (Price != 0) {
+                $('input[name="FinalPrice"]').val(Price);
+            } else {
+                $('input[name="FinalPrice"]').val(0);
+            }
+        }
+    });
+</script>
+
+{% endblock %}

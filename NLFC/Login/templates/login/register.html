@@ -1,0 +1,141 @@
+{% extends 'eshop/basic.html' %}
+{% block title %} Index || My Awesome Cart {% endblock %} {% load static %} {% block body %}
+<!-- begin::preloader-->
+<!-- end::preloader -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="login">
+                <h2>Register</h2>
+                <!-- form -->
+                <form action="/login/register/" method="POST" id="register">
+                    {% csrf_token %}
+                    <div class="alert alert-danger" style="display: none;visibility:hidden;" role="alert">...</div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="ContactPerson" name="ContactPerson"
+                            placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="Email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" class="form-control" name="Mobile" placeholder="Mobile" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="Houseno" placeholder="Address">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="Colony" placeholder="Colony, Landmark" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="City" placeholder="City" value="Aurangabad" required>
+                    </div>
+                    <button type="button" class="btn verify btn-primary btn-block">Send OTP</button>
+                    <div class="accdetail" style="display: none;visibility:hidden;">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="OTP" id="OTP" placeholder="OTP" required>
+                            <input type="hidden" value="" id="verOTP">
+                        </div>
+                        <button type="button" class="btn verifyOTP btn-primary btn-block">Verify</button>
+                    </div>
+                    <div class="subform" style="display: none;visibility:hidden">
+                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                    </div>
+                    <div class="alert alert-danger" style="display: none;visibility:hidden;" role="alert">...</div>
+                    <hr>
+                    <p class="text-muted">Already have an account?</p>
+                    <a href="/login/login" class="btn btn-outline-light btn-sm">Sign in!</a>
+                </form>
+                <!-- ./ form -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Plugin scripts -->
+<script src="/static/vendors/bundle.js"></script>
+
+<!-- App scripts -->
+<script src="/static/js/app.min.js"></script>
+
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready(function () {
+        $('.preloader').css('display', 'none');
+    });
+    $(document).on('click', '.verify', function (event) {
+        event.preventDefault();
+        $('.verify').css("cssText", "display: none;visibility:hidden;");
+        $('.alert').empty();
+        $('.alert').append('We have sent OTP to your email address.');
+        $('.alert').css("cssText", "display: block;visibility:visible;");
+        var formData = {
+            'email': $('input[name="Email"]').val(),
+            'name': $('input[name="ContactPerson"]').val(),
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/login/verifyemail/',
+            data: formData,
+            encode: true
+        })
+            .done(function (data) {
+                data = data;
+                debugger
+                if (data == 'Email is taken') {
+                    $('.alert').empty();
+                    $('.alert').append('Email is taken, kindly use different!');
+                    $('.alert').css("cssText", "display: block;visibility:visible;");
+                    $('.verify').css("cssText", "display: block;visibility:visible;");
+                } else {
+                    $('#verOTP').val(data);
+                    $('.accdetail').css("cssText", "display: block;visibility:visible;");
+                    $('.verify').css("cssText", "display: none;visibility:hidden;");
+                }
+            });
+    });
+    $(document).on('change', '#AccountType', function () {
+        var thisval = $(this).val();
+        var actye = $(this).children('option[value="' + thisval + '"]').html();
+        if (actye == 'Industry') {
+            $('.alert').css("cssText", "display: none;visibility:hidden;");
+            $('#AccountName').attr('placeholder', actye);
+            $('#ContactPerson').attr('placeholder', 'Primary Contact Person');
+            $('input[name="AccountType"]').val(actye);
+        }
+        else if (actye == 'University') {
+            $('.alert').css("cssText", "display: none;visibility:hidden;");
+            $('#AccountName').attr('placeholder', actye);
+            $('#ContactPerson').attr('placeholder', 'Full Name');
+            $('input[name="AccountType"]').val(actye);
+        }
+        else {
+            $('.alert').empty();
+            $('.alert').append('Please Choose Correct Account Type!');
+            $('.alert').css("cssText", "display: block;visibility:visible;");
+        }
+    });
+    $(document).on('click', '.verifyOTP', function (e) {
+        debugger
+        event.preventDefault();
+        var OTP = $('#OTP').val();
+        var verOTP = $('#verOTP').val();
+        if (OTP != verOTP) {
+            $('.alert').empty();
+            $('.alert').append('Please Correct OTP!');
+            $('.alert').css("cssText", "display: block;visibility:visible;");
+        } else {
+            $('.alert').empty();
+            $('.alert').css("cssText", "display: none;visibility:hidden;");
+            $('.verifyOTP').css("cssText", "display: none;visibility:hidden;");
+            $('.subform').css("cssText", "display: block;visibility:visible;");
+        }
+    });
+    $(document).on('submit','#register',function(){
+        $('input[name="Country"]').attr('readonly',false);
+        $('input[name="Country"]').attr('disabled',false);
+    });
+</script> {% endblock %}

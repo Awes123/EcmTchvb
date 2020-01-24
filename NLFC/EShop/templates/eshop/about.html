@@ -1,0 +1,148 @@
+{% extends 'eshop/basic.html' %}
+
+{% block title %} About-us || My Awesome Cart {% endblock %}
+
+{% block body %}<h4 class="mt-5"></h4> 
+<main role="main">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb breadcrumb2">
+        <li class="breadcrumb-item"><a href="index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+        <li class="breadcrumb-item">About Us</li>
+      </ol>
+    </nav>
+    <div class="row">
+      <div class="about-us">
+        <div class="container">
+          <div class="our-story">
+            <div class="row">
+              <div class="col-lg-6 col-md-12">
+                <div class="our-story_text">
+                  <h1 class="title orange-underline">About Us</h1>
+                  <p>Tyna Giang's integrated agro-forestry farming model is the first project in Vietnam to achieve the highest ranking in the "100 projects to combat climate change" by the Ministry of Environment, Energy and Sea. France organized in 2016 ...</p>
+                  <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit. Neque porro quisquam est, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem</p>
+                  <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit. Neque porro quisquam est</p>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-12"> <img src="/static/images/about-img.jpg" class="img-fluid" alt="" title=""> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+  <div class="counter-section">
+    <div class="container">
+      <div class="row" id="counter">
+        <div class="col-lg-3 col-md-6 col-sm-6">
+          <div class="counter">
+            <div class="text-center"><img src="/static/images/customer-icon.png" alt="" title="" class="img-fluid"></div>
+            <h2 class="counter-value" data-count="10">10</h2>
+            <p class="count-text ">Our Customer</p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+          <div class="counter">
+            <div class="text-center"><img src="/static/images/customer-icon2.png" alt="" title="" class="img-fluid"></div>
+            <h2 class="counter-value" data-count="25">25</h2>
+            <p class="count-text ">Happy Clients</p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+          <div class="counter">
+            <div class="text-center"><img src="/static/images/customer-icon3.png" alt="" title="" class="img-fluid"></div>
+            <h2 class="counter-value" data-count="150">150</h2>
+            <p class="count-text ">Project Complete</p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+          <div class="counter">
+            <div class="text-center"><img src="/static/images/customer-icon4.png" alt="" title="" class="img-fluid"></div>
+            <h2 class="counter-value" data-count="100">100</h2>
+            <p class="count-text">Coffee With Clients</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="why-choose">
+    <h2>Why Choose Us</h2>
+    <div class="clearfix"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-7">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 mb-4">
+              <div class="icon-detail"><img src="/static/images/dow_icon_1.png" class="img-fluid" alt="">
+                <h5>High Quality Service</h5>
+                <p>Lorem Ipsum is simply dummy text of the printing</p>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 mb-4">
+              <div class="icon-detail"><img src="/static/images/dow_icon_2.png" alt="">
+                <h5>Flexibility</h5>
+                <p>Lorem Ipsum is simply dummy text of the printing</p>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 mb-4">
+              <div class="icon-detail"><img src="/static/images/dow_icon_3.png" alt="">
+                <h5>Reliable Consistent Supply</h5>
+                <p>Lorem Ipsum is simply dummy text of the printing</p>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 mb-4">
+              <div class="icon-detail"><img src="/static/images/dow_icon_4.png" alt="">
+                <h5>Customer Planning and Management</h5>
+                <p>Lorem Ipsum is simply dummy text of the printing</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div><img src="/static/images/page-img/why-choose.jpg" title="" alt="" class="img-fluid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <div id="newsletter">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7">
+          <h4>Join Our Newsletter Now</h4>
+          <p class="m-0">Get E-mail updates about our latest shop and special offers.</p>
+        </div>
+        <div class="col-md-5">
+          <form>
+            {% csrf_token %}
+          <div class="input-group">
+            <input type="email" class="form-control newsletter" name="inputEmail" placeholder="Enter your mail">
+            <span class="input-group-btn">
+            <button class="btn btn-theme btn-subcribe" type="button">Subscribe</button>
+            </span> </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+      </main>
+<script>
+  $(document).on('click','.btn-subcribe',function(){
+    var formData = {
+      'inputEmail': $('input[name="inputEmail"]').val(),
+      'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+  };
+
+  $.ajax({
+      type: 'POST',
+      url: '/shop/Newsletters/',
+      data: formData,
+      encode: true
+  })
+      .done(function (data) {
+        alert(data);
+      });
+  });
+</script>
+{% endblock %}

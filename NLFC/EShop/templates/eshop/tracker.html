@@ -1,0 +1,114 @@
+{% extends 'eshop/basic.html' %}
+
+{% block title %} Tracker || My Awesome Cart {% endblock %}
+
+{% block body %}<h4 class="mt-5">&nbsp;</h4>
+<div class="container">
+    <div class="col my-4">
+        <h2>Enter your Order Id and Email Address to track your Order </h2>
+        <form action="#" method="POST" id="trackerform">
+            {% csrf_token %}
+            <input type="hidden" name="itemsJson" id="itemsJson">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="order_id">Order ID</label>
+                    <input type="text" class="form-control" name="order_id" id="order_id" placeholder="Order ID">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputEmail">Email</label>
+                    <input type="email" class="form-control" name="inputEmail" id="inputEmail" placeholder="Email">
+                </div>
+                <button type="submit" class="btn btn-primary">Track Order</button>
+            </div>
+        </form>
+    </div>
+    <div class="col my-4">
+        <h2>Your Order Details: </h2>
+        <div class="my-4">
+            <ul class="list-group" id="citems">
+            </ul>
+            <div class="pamt"></div>
+        </div>
+        <h2>Your Order Status: </h2>
+        <div class="my-4">
+            <ul class="list-group" id="items">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Enter your order id and email and click Track Order to find details about your order
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+    $('#trackerform').submit(function (event) {
+        event.preventDefault();
+        $("#items").empty();
+        $("#citems").empty();
+        $(".pamt").empty();
+        var amount = 0;
+        var formData = {
+            'order_id': $('input[name="order_id"]').val(),
+            'inputEmail': $('input[name="inputEmail"]').val(),
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/shop/tracker/',
+            data: formData,
+            encode: true
+        })
+            .done(function (data) {
+                data = JSON.parse(data);
+                updates = data[0];
+                if (updates.length > 0 & updates != {}) {
+                    for (i = 0; i < updates.length; i++) {
+                        let text = updates[i]['text'];
+                        let time = updates[i]['time'];
+                        mystr = ` <li class="list-group-item d-flex justify-content-between align-items-center">
+                  ${text}
+                  <span class="badge badge-primary badge-pill">${time}</span>
+                  </li>`;
+                        $("#items").append(mystr);
+                    }
+                } else {
+                    mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                        Sorry we are not able to fetch this email and order id make sure to correct it.!
+                        </li>`;
+                    $("#items").append(mystr);
+                }
+                //fill in order details
+                cart = JSON.parse(data[1]);
+                for (var item in cart) {
+                    let name = cart[item][1];
+                    let qty = cart[item][0];
+                    if (cart[item][0] == 0) {
+                    } else {
+                        let amt = amount + cart[item][2] * qty;
+                        amount = amt;
+
+                        mystr = ` <li class="list-group-item d-flex justify-content-between align-items-center">
+                      ${name}
+                      <span class="badge badge-primary badge-pill">${qty}</span>
+                      </li>`;
+                        $("#citems").append(mystr);
+                    }
+                }
+                amtstr = `<nav aria-label="breadcrumb">
+                           <ol class="breadcrumb">
+                               <li class="breadcrumb-item active" aria-current="page">Payable Amount : <b> &#8377;<span
+                                           id="">${amount}</span>/-</b>Thanks for using
+                                   for my Awesome Cart !</li>
+                           </ol>
+                       </nav>`;
+                $(".pamt").append(amtstr)
+
+            });
+    });
+</script>
+
+{% endblock %}

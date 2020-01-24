@@ -1,0 +1,55 @@
+{% extends 'eshop/basic.html' %}
+{% block title %} Index || My Awesome Cart {% endblock %} {% load static %} {% block body %}
+<!-- begin::preloader-->
+<!-- end::preloader -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="login">
+                <h2>Login</h2>
+                <form action="/login/login/" method="POST" id="login">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="exampleInputEmail1"><strong>Username or email address *</strong></label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" name="username"
+                            aria-describedby="emailHelp" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1"><strong>Password *</strong></label>
+                        <input type="password" name="password" class="form-control" id="exampleInputPassword1"
+                            placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-6">
+                                <input name="" type="checkbox" value="" name="rem">
+                                Save Password</div>
+                            <div class="col-6 text-right"><a href="/login/reset">Forget your Password</a></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Sign in</button>
+                        <div>
+                            {%for message in messages%}
+                            <h4 class="text-danger">{{message}}</h4>
+                            {% endfor %}
+                        </div>
+                        <hr>
+
+                        <p class="text-muted">Don't have an account?</p>
+                        <a href="/login/register" class="btn btn-outline-warning btn-sm">Register now!</a>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Plugin scripts -->
+<script src="/static/vendors/bundle.js"></script>
+
+<!-- App scripts -->
+<script src="/static/js/app.min.js"></script>
+
+{% endblock %}

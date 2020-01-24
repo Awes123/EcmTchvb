@@ -1,0 +1,364 @@
+{% extends 'eshop/basic.html' %} {% block css %} .col-md-3{ display:inline-block; margin-left:-4px; } .col-md-3 img{
+width:100%; height:auto; } body .carousel-indicator { bottom:0; } .carousel-indicators li { box-sizing: content-box;
+-ms-flex: 0 1 auto;
+flex: 0 1 auto; width: 30px; height: 3px; margin-right: 3px; margin-left: 3px; text-indent: -999px; cursor: pointer;
+background-color: #0062dc; background-clip: padding-box; border-top: 10px solid transparent; border-bottom: 10px solid
+transparent; opacity:
+.5; transition: opacity .6s ease; } .carousel-indicators { bottom: -25px !important; } body .carousel-control-prev, body
+.carousel-control-next{ position: absolute; top: 0; bottom: 0; z-index: 1; display: -ms-flexbox; display: flex;
+-ms-flex-align: center;
+align-items: center; -ms-flex-pack: center; justify-content: center; width: 2%; color: #fff; text-align: center;
+opacity: 1; transition: opacity .15s ease; background: #e0e0e0; } body .no-padding{ padding:auto 0, } .col-md-3 .imgs {
+width: 100%; height:
+160px; } .card-bodys { -ms-flex: 1 1 auto; flex: 1 1 auto; padding: 1.25rem; min-height: 200px; } {% endblock %}
+{% block title %} Index || My Awesome Cart {% endblock %} {% load static %} {% block body %}
+<!-- slider -->
+<!--BOOTSTRAP-->
+<div class="bd-example">
+    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+            <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/static/images/slider-img/slider2-1.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>First slide label</h5>
+                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="/static/images/slider-img/slider2-2.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Second slide label</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="/static/images/slider-img/slider3.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Third slide label</h5>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+<!-- slider -->
+
+<!-- Container Start-->
+<div class="container" style="top: -100px;">
+    <div class="banner-patten mt-4 mb-4">
+        <div class="container">
+            <div class="banner-div" style="top:0">
+                <div class="row m-0">
+                    <div class="col-lg-4 col-md-4 col-sm-4 boder-left wow fadeInLeft"
+                        style="visibility: visible; animation-name: fadeInLeft;"> <img src="/static/images/shipping.png"
+                            alt="" title="">
+                        <h4 class="text-uppercase">Free Shipping</h4>
+                        <p>For all order over 99$</p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 boder-left wow fadeInLeft"
+                        style="visibility: visible; animation-name: fadeInLeft;"> <img src="/static/images/timing.png"
+                            alt="" title="">
+                        <h4 class="text-uppercase"> Delivery On Time</h4>
+                        <p>Trustable &amp; Fast Delivery Services</p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 wow fadeInLeft"
+                        style="visibility: visible; animation-name: fadeInLeft;"> <img src="/static/images/card.png"
+                            alt="" title="">
+                        <h4 class="text-uppercase">Secure Payment</h4>
+                        <p>100% secure payment </p>
+                        <p> </p>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    {% for prod, range , nSlides in allprods %}
+    <div class="products-section">
+        <div class="container">
+            {% csrf_token %}
+            <h2 class="wow fadeInDown cathead" style="visibility: visible; animation-name: fadeInDown;">{{prod.0.category_id}}</h2>
+            <div class="owl-carousel latest-products owl-theme wow fadeIn owl-loaded owl-drag"
+                style="visibility: visible; animation-name: fadeIn;">
+                <div class="owl-stage-outer">
+                    <div class="owl-stage row"
+                        style="transform: translate3d(0px, 0px, 0px); transition: all 0.25s ease 0s;">
+                        {% for s in prod %}
+                        <div class="owl-item active col-lg-3">
+                            <div class="item">
+                                <div class="sale-flag-side hidden" id="sflag{{s.id}}"> <span class="sale-text">Sale</span> </div>
+                                <div class="product">
+                                    <div id="carousel-2{{s.id}}" class="carousel slide" data-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active"> <a class="product-img"
+                                                    href="/shop/productview/{{s.id}}"><img src="/media/{{s.image}}"
+                                                        alt="" style="max-height: 100px !important;"></a>
+                                            </div>
+                                            <div class="carousel-item"> <a class="product-img"
+                                                    href="/shop/productview/{{s.id}}"><img src="/media/{{s.image1}}"
+                                                        alt="" style="max-height: 100px !important;"></a>
+                                            </div>
+                                            <div class="carousel-item"> <a class="product-img"
+                                                    href="/shop/productview/{{s.id}}"><img src="/media/{{s.image2}}"
+                                                        alt="" style="max-height: 100px !important;"></a>
+                                            </div>
+                                        </div>
+                                        <a class="carousel-control-prev" href="#carousel-2{{s.id}}" role="button"
+                                            data-slide="prev"> <i class="fa fa-arrow-circle-o-left"
+                                                aria-hidden="true"></i> </a> <a class="carousel-control-next"
+                                            href="#carousel-2{{s.id}}" role="button" data-slide="next"> <i
+                                                class="fa fa-arrow-circle-o-right" aria-hidden="true"></i> </a>
+                                    </div>
+                                    <h5 class="product-type">{{s.subcategory}}</h5>
+                                    <h3 class="product-name" id="namepr{{s.id}}">{{s.product_name}}</h3>
+                                    <h3 class="product-price">&#8377;<span id="pricepr{{s.id}}">{{s.price}}</span><input type="hidden" name="sales" id="{{s.id}}" value="{{s.sales}}"><input type="hidden" name="sprice" value="&#8377;{{s.sprice}}">
+                                        <del></del><span class="text-success ml-2 b"></span></h3>
+                                    <span id="divpr{{s.id}}" class="divpr cart" style="background: #f36e24;border-radius: 50px;padding: 3px 15px!important;text-transform: uppercase;font-weight: 800!important;color: #fff;display: flex;font-size: 12px!important;margin: 2px;">
+                                        <button id="pr{{s.id}}" class="btn btn-primary cart" >Cart<i
+                                                class="fa fa-shopping-bag" aria-hidden="true"></i></button>
+                                    </span>
+                                    <a href="/shop/productview/{{s.id}}"><button id="qv{{s.id}}"
+                                            class="btn btn-primary" style="background: #f36e24;border-radius: 50px !important;padding: 15px 45px!important;text-transform: uppercase;font-weight: 800!important;color: #fff;display: flex;font-size: 14px!important;margin: 2px;">View<i class="fa fa-eye"
+                                                aria-hidden="true"></i></button></a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="owl-nav" style="display: none;visibility: hidden;"><button type="button" role="presentation"
+                        class="owl-prev disabled"><span aria-label="Previous"><i
+                                class="fa fa-angle-left"></i></span></button><button type="button" role="presentation"
+                        class="owl-next"><span aria-label="Next"><i class="fa fa-angle-right"></i></span></button></div>
+                <div class="owl-dots disabled"></div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <!-- slider Carousel Start-->
+    <!-- {% for prod, range , nSlides in allprods %}
+    <h5 class="my-4">Flash Sale on {{prod.0.category}}: <em>Recomended items</em></h4>
+        <div class="row">
+            <div id="carouselExampleIndicators{{forloop.counter}}" class="carousel col slide my-3" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators{{forloop.counter}}" data-slide-to="0" class="active">
+                    </li>
+                    {% for i in range %}
+                    <li data-target="#carouselExampleIndicators{{forloop.parentloop.counter}}" data-slide-to="{{i}}">
+                    </li>
+                    {% endfor%}
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        {% for s in prod %}
+                        <div class="col-xs-3 col-sm-3 col-md-3">
+                            <div class="card align-items-center" style="width: 18rem;">
+                                <img src="/media/{{s.image}}" class="card-img-top imgs" alt="...">
+                                <div class="card-bodys">
+                                    <h5 class="card-title" id="namepr{{s.id}}">{{s.product_name}}</h5>
+                                    <b>Price. &#8377;<span id="pricepr{{s.id}}">{{s.price}}</span></b>
+                                    <p class="card-text">{{s.desc}}</p>
+                                    <span id="divpr{{s.id}}" class="divpr">
+                                        <button id="pr{{s.id}}" class="btn btn-primary cart">Add To Cart</button>
+                                    </span>
+                                    <a href="/shop/productview/{{s.id}}"><button id="qv{{s.id}}"
+                                            class="btn btn-primary cart">QuickView</button></a>
+                                </div>
+                            </div>
+                        </div>
+                        {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last %}
+                    </div>
+                    <div class="carousel-item">
+                        {% endif %} {% endfor %}
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators{{forloop.counter}}" role="button"
+                    data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators{{forloop.counter}}" role="button"
+                    data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+        {% endfor %} -->
+    <!-- slider Carousel End-->
+</div>
+{% endblock %} {% block js %}
+<script>
+    $(document).ready(function(){
+        var classcat=$('h2[class*="cathead"]');
+        $(classcat).each(function(i,item){
+            debugger
+            var formData = {
+                'inputEmail':$(item).html(),
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+            };
+          
+            $.ajax({
+                type: 'POST',
+                url: '/shop/returncategory/',
+                data: formData,
+                encode: true
+            })
+                .done(function (data) {
+                    
+                    $(item).html(data)
+                });
+        });
+        var salescart=$('input[name*="sales"]');
+        $(salescart).each(function(i,item){
+            var thisid=$(item).attr('id');
+            var thisval=parseInt($(item).val());
+            if(thisval>0){
+             $(item).siblings('del').append($(item).siblings('input[name="sprice"]').val());
+             $(item).siblings('span.b').append(thisval+"%");
+            }else{
+                $(item).siblings('del').remove();
+                $('#sflag'+thisid).remove();
+                $(item).siblings('span.b').remove();
+            }
+        });
+    });
+</script>
+<script>
+    //find out the cart item from localstorage
+    if (localStorage.getItem('cart') == null) {
+        var cart = {};
+    } else {
+        cart = JSON.parse(localStorage.getItem('cart'));
+        updateCart(cart);
+    }
+    //If the Add To Cart is Click , add/increment item
+    $(document).on('click', '.cart', function () {
+        debugger
+        var idstr = this.id.toString();
+        var iddiv = idstr.slice(0, 3);
+        if (iddiv != "div") {
+            if (cart[idstr] != undefined) {
+                qty = cart[idstr][0] + 1;
+                if (cart[idstr][0] == 0) {
+                    qty = 1;
+                    name = $('#name' + idstr).html();
+                    price = $('#price' + idstr).html();
+                    cart[idstr] = [qty, name, parseInt(price)];
+                }
+            } else {
+                qty = 1;
+                name = $('#name' + idstr).html();
+                price = $('#price' + idstr).html();
+                cart[idstr] = [qty, name, parseInt(price)];
+            }
+            updateCart(cart);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            //$('#cart').html(Object.keys(cart).length);
+        }
+    });
+    //Add popover to cart
+    $('#popcart').popover();
+    $("#popcart").attr('data-content', '<h5>Cart for your items in myshopping cart</h5>');
+    updatepopover(cart);
+
+    function updateCart(cart) {
+        var sum = 0;
+        for (var item in cart) {
+            debugger
+            sum = sum + cart[item][0];
+            sums = cart[item][0];
+            if (sums == 0) {
+                $('#div' + item).html('<button id="' + item + '" class="btn btn-primary cart">Cart</button>');
+            } else {
+                $('#div' + item).html("<button id='minus" + item + "' class='btn btn-primary minus'>-</button><span id='val" + item + "' class='p-1'>" + cart[item][0] + "</span><button  id='plus" + item + "' class='btn btn-primary plus'>+</button>");
+            }
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        // $('#cart').html(sum);
+        updatepopover(cart);
+    }
+    $(document).on('click', '#clearCart', function () {
+        cart = JSON.parse(localStorage.getItem('cart'));
+        for (var item in cart) {
+            $('#div' + item).html('<button id="' + item + '" class="btn btn-primary cart">Add To Cart</button>');
+        }
+        localStorage.clear();
+        cart = {};
+        updateCart(cart);
+    });
+
+    function updatepopover(cart) {
+        $("#addtocartpopup").empty();
+        var popstr = "";
+        var i = 1;
+        for (var item in cart) {
+            if (cart[item][0] == 0) {
+            } else {
+                debugger
+                var sdssad = 'name' + item;
+                var name = $('#' + sdssad);
+                if (name.length != 0) {
+                    let names = document.getElementById(sdssad).innerHTML.slice(0, 19);
+                    let qty = parseInt(cart[item][0]);
+                    let prs = parseInt(cart[item][2]);
+                    let price = qty * prs;
+                    var img = name.siblings('.carousel').children('.carousel-inner').children('.active').children('a.product-img').children('img').attr('src');
+                    popstr = popstr + `<div class="col-md-3"><img src="${img}" alt="" title="" class="img-fluid">
+                </div>
+                <div class="col-md-9">
+                  <p>${qty} x ${names} <span class="price">${price}</span></p>
+                  <a href="#" class="close">x</a>
+                </div>
+                <div class="col-md-12">
+                  <hr>
+                </div>
+               `;
+                    i = i + 1;
+                }
+            }
+        }
+        popstr = popstr + "</div>";
+        popstr = popstr + "<a href='/shop/checkout/' class='btn btn-primary col-lg-4 ml-4' id='checkout'  style='border-radius: 10px !important;text-transform: none;'>Checkout</a><span class='btn btn-primary mx-2 col-lg-4 ml-4' id='clearCart' onclick='clearCart()' style='border-radius: 10px !important;text-transform: none;'>Clear Cart</span>";
+        $("#popcart").attr('data-content', popstr);
+        $('#popcart').popover('show');
+        $('#addtocartpopup').append(popstr);
+    }
+    //If Plus or Minus button is click change the cart and value
+    $('.divpr').on("click", "button.minus", function () {
+        debugger
+        a = this.id.slice(7);
+        cart['pr' + a][0] = cart['pr' + a][0] - 1;
+        cart['pr' + a][0] = Math.max(0, cart['pr' + a][0]);
+        if (cart['pr' + a][0] == 0) {
+            $('#divpr' + a).empty();
+            $('#divpr' + a).append('<button id="pr' + a + '" class="btn btn-primary cart">Add To Cart</button>');
+        } else {
+            $('#valpr' + a).empty();
+            $("#valpr" + a).html(cart['pr' + a][0]);
+        }
+        updateCart(cart);
+    });
+    $('.divpr').on("click", "button.plus", function () {
+        debugger
+        a = this.id.slice(6);
+        cart['pr' + a][0] = cart['pr' + a][0] + 1;
+        $('#valpr' + a).empty();
+        $('#valpr' + a).html(cart['pr' + a][0]);
+        updateCart(cart);
+    });
+</script>
+{% endblock %}
